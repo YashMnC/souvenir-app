@@ -1,6 +1,4 @@
-# Souvenir
-
-![Souvenir](https://i.ibb.co/ccHNsdh/Screenshot-2022-04-11-204412.png)
+# Souvenir App
 
 ## About
 
