@@ -62,7 +62,10 @@ const Auth = () => {
 
     try {
       dispatch({ type: "AUTH", data: { result, token } });
-      navigate("/");
+      navigate("/posts");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1);
     } catch (error) {
       console.log(error);
     }
