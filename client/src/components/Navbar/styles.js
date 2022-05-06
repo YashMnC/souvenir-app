@@ -10,6 +10,9 @@ export default makeStyles((theme) => ({
     justifyContent: "right",
     alignItems: "center",
     padding: "10px 50px",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
   },
   heading: {
     color: "rgba(0,183,255, 1)",

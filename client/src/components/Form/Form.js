@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
-
 import useStyles from "./styles";
 import { createPost, updatePost } from "../../actions/posts";
+import { useNavigate } from "react-router-dom";
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
@@ -17,6 +17,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem("profile"));
+  const navigate = useNavigate();
 
   const clear = () => {
     setCurrentId(null);
@@ -34,22 +35,21 @@ const Form = ({ currentId, setCurrentId }) => {
       dispatch(
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
-    } else dispatch(createPost({ ...postData, name: user?.result?.name }));
+    } else
+      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
 
     // dispatch(getPosts());
     clear();
   };
-  const posts = useSelector((state) => state.posts);
-  useEffect(() => {
-    let currentPost = {};
-    posts.forEach((post) => {
-      if (post._id === currentId) {
-        currentPost = post;
-      }
-    });
+  const post = useSelector((state) =>
+    currentId
+      ? state.posts.posts.find((message) => message._id === currentId)
+      : null
+  );
 
-    setPostData(currentPost);
-  }, [currentId]);
+  useEffect(() => {
+    if (post) setPostData(post);
+  }, [post]);
 
   if (!user?.result?.name) {
     return (
@@ -62,7 +62,7 @@ const Form = ({ currentId, setCurrentId }) => {
   }
 
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form
         autoComplete="off"
         noValidate
