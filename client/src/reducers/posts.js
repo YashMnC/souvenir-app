@@ -8,6 +8,7 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_POST,
+  ADD_COMMENT,
 } from "../constants/actionTypes";
 
 export default (state = { isLoading: true, posts: [] }, action) => {
@@ -54,6 +55,14 @@ export default (state = { isLoading: true, posts: [] }, action) => {
       return {
         ...state,
         posts: state.posts.filter((post) => post.id !== action.payload.id),
+      };
+
+    case ADD_COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
       };
 
     default:

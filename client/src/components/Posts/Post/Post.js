@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardActions,
@@ -14,38 +14,53 @@ import useStyles from "./styles";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+//import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { deletePost, likePost } from "../../../actions/posts";
 import { useNavigate } from "react-router-dom";
-
-const user = JSON.parse(localStorage.getItem("profile"));
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [likes, setLikes] = useState(post?.likes);
+  const userId = user?.result?._id || user?.result?.googleId;
+  //const hasCurrentUserLikedPost = post.likes.find((like) => like === userId);
   const openPost = () => navigate(`/posts/${post._id}`);
 
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [window.location]);
+
+  const handleLike = async () => {
+    dispatch(likePost(post._id));
+
+    // if (hasCurrentUserLikedPost) {
+    //   setLikes(post.likes.filter((id) => id !== userId));
+    // } else {
+    //   setLikes([...post.likes, userId]);
+    // }
+  };
+
+  useEffect(() => {
+    setLikes(post.likes);
+  }, [post.likes]);
+
   const Likes = () => {
-    if (post.likes.length > 0) {
-      return post.likes.find(
-        (like) => like === (user?.result?._id || user?.result?.googleId)
-      ) ? (
+    if (likes?.length > 0) {
+      return likes.find((id) => id === userId) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length} others like`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length} others like`
+            : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
-          <ThumbUpAltIcon fontSize="small" />
+          <ThumbUpAltOutlined fontSize="small" />
           &nbsp;
-          {post.likes.length > 1
-            ? `${post.likes.length} likes`
-            : `${post.likes.length} like`}
+          {likes.length > 1 ? `${likes.length} likes` : `${likes.length} like`}
         </>
       );
     }
@@ -94,13 +109,16 @@ const Post = ({ post, setCurrentId }) => {
             {post.tags.map((tag) => `#${tag} `)}
           </Typography>
         </div>
+
         <Typography variant="h5" className={classes.title} gutterBottom>
           {post.title}
         </Typography>
         <CardContent>
           {" "}
           <Typography variant="body2" color="textSecondary" component="p">
-            {post.message}
+            {post.message.length > 30
+              ? post.message.substring(0, 50) + ".....Read more."
+              : post.message}
           </Typography>
         </CardContent>
       </ButtonBase>
@@ -109,9 +127,7 @@ const Post = ({ post, setCurrentId }) => {
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={() => {
-            dispatch(likePost(post._id));
-          }}
+          onClick={handleLike}
         >
           <Likes />
         </Button>

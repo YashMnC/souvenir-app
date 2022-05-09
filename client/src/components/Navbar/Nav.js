@@ -9,9 +9,8 @@ import {
 } from "@material-ui/core";
 import useStyles from "./styles";
 import souvenir from "../../images/souvenir.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
 import decode from "jwt-decode";
 
 const Navbar = () => {
@@ -20,19 +19,24 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const token = user?.token;
+
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
+    navigate("/auth", { replace: true });
     setUser(null);
-    navigate("/auth");
-    setTimeout(() => {
-      window.location.reload();
-    }, 2);
+  };
+
+  const handleSignIn = () => {
+    navigate("/auth", { replace: true });
+    window.location.reload();
   };
 
   useEffect(() => {
+    const token = user?.token;
+
     if (token) {
       const decodedToken = decode(token);
+
       if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();
     }
 
@@ -80,12 +84,7 @@ const Navbar = () => {
               </Button>
             </div>
           ) : (
-            <Button
-              component={Link}
-              to="/auth"
-              color="primary"
-              variant="contained"
-            >
+            <Button onClick={handleSignIn} variant="contained" color="primary">
               Sign In
             </Button>
           )}

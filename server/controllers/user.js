@@ -11,7 +11,10 @@ export const login = async (req, res) => {
     if (!existingUser)
       return res.status(404).json({ message: "User does not exists" });
 
-    const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
 
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid credentials" });
@@ -31,9 +34,8 @@ export const login = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
+  const { email, password, confirmPassword, firstName, lastName } = req.body;
   try {
-    const { email, password, confirmPassword, firstName, lastName } = req.body;
-
     const existingUser = await User.findOne({ email });
 
     if (existingUser)

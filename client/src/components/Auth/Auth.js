@@ -37,10 +37,11 @@ const Auth = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     if (isSignup) {
       dispatch(signup(formData, navigate));
-    } else dispatch(login(formData, navigate));
+    } else {
+      dispatch(login(formData, navigate));
+    }
   };
 
   const handleChange = (e) => {
@@ -62,10 +63,10 @@ const Auth = () => {
 
     try {
       dispatch({ type: "AUTH", data: { result, token } });
+
       navigate("/posts");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1);
+
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +83,7 @@ const Auth = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography variant="h5">{isSignup ? "Sign Up" : "Login"}</Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        {/* <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {isSignup && (
               <>
@@ -131,39 +132,39 @@ const Auth = () => {
             className={classes.submit}
           >
             {isSignup ? "Sign Up" : "Login"}
-          </Button>
+          </Button> */}
 
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            render={(renderProps) => (
-              <Button
-                className={classes.googleButton}
-                fullWidth
-                color="primary"
-                onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
-                startIcon={<Icon />}
-                variant="contained"
-              >
-                Login with Google
-              </Button>
-            )}
-            onSuccess={googleSuccess}
-            onFailure={googleFailure}
-            cookiePolicy="single_host_origin"
-          />
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          render={(renderProps) => (
+            <Button
+              className={classes.googleButton}
+              fullWidth
+              color="primary"
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              startIcon={<Icon />}
+              variant="contained"
+            >
+              Login with Google
+            </Button>
+          )}
+          onSuccess={googleSuccess}
+          onFailure={googleFailure}
+          cookiePolicy="single_host_origin"
+        />
 
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Button onClick={switchMode}>
-                {" "}
-                {isSignup
-                  ? "Already have an account? Log In"
-                  : "Don't have an account? Sign Up"}{" "}
-              </Button>
-            </Grid>
+        {/* <Grid container justify="flex-end">
+          <Grid item>
+            <Button onClick={switchMode}>
+              {" "}
+              {isSignup
+                ? "Already have an account? Log In"
+                : "Don't have an account? Sign Up"}{" "}
+            </Button>
           </Grid>
-        </form>
+        </Grid> */}
+        {/* </form> */}
       </Paper>
     </Container>
   );

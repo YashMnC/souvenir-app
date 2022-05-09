@@ -8,6 +8,7 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_POST,
+  ADD_COMMENT,
 } from "../constants/actionTypes";
 
 import * as api from "../api/index.js";
@@ -53,6 +54,7 @@ export const deletePost = (id) => async (dispatch) => {
     await api.deletePost(id);
 
     dispatch({ type: DELETE, payload: id });
+    window.location.reload();
   } catch (error) {
     console.log(error);
   }
@@ -89,6 +91,17 @@ export const getPost = (id) => async (dispatch) => {
     dispatch({ type: FETCH_POST, payload: data });
 
     dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const commentPost = (comment, id) => async (dispatch) => {
+  try {
+    const { data } = await api.addComment(comment, id);
+
+    dispatch({ type: ADD_COMMENT, payload: data });
+    return data.comments;
   } catch (error) {
     console.log(error);
   }

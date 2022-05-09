@@ -10,6 +10,7 @@ import moment from "moment";
 import { useParams, useNavigate } from "react-router-dom";
 import useStyles from "./styles";
 import { getPost, getPostsBySearch } from "../../actions/posts";
+import CommentSection from "./CommentSection";
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -63,15 +64,13 @@ const PostDetails = () => {
           <Typography variant="body1">
             {moment(post.createdAt).fromNow()}
           </Typography>
-          <Divider style={{ margin: "20px 0" }} />
-          {/* <Typography variant="body1">
-            <strong></strong>
-          </Typography>
-          <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
+          {/* <Divider style={{ margin: "20px 0" }} />
+           <Typography variant="body1">
             <strong></strong>
           </Typography> */}
-          {/* <Divider style={{ margin: "20px 0" }} /> */}
+          <Divider style={{ margin: "20px 0" }} />
+          <CommentSection post={post} />
+          <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
           <img

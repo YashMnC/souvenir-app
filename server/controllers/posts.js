@@ -1,3 +1,4 @@
+import e from "express";
 import express from "express";
 import mongoose from "mongoose";
 
@@ -120,6 +121,22 @@ export const getPost = async (req, res) => {
     res.status(200).json(post);
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+};
+
+export const addComment = async (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+
+  try {
+    const post = await PostMessage.findById(id);
+    post.comments.push(comment);
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+      new: true,
+    });
+    res.json(updatedPost);
+  } catch (error) {
+    res.json(error);
   }
 };
 
