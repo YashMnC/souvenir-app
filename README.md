@@ -1,6 +1,5 @@
 # Souvenir App
 
-
 ## Introduction
 
 Using React, Node.js, Express & MongoDB built a Full Stack MERN Application. The App is a simple social media app that allows users to post interesting events that happened in their lives.
@@ -10,6 +9,7 @@ Using React, Node.js, Express & MongoDB built a Full Stack MERN Application. The
 The app has features such as like,edit and delete post.
 Users can also search posts using title or tags.
 It also has pagination for posts.
+Users can comment on posts.
 
 Setup:
 
