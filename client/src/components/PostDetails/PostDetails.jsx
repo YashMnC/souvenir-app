@@ -118,7 +118,7 @@ const PostDetails = () => {
       ) : (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">
-            No posts to recommend:
+            No posts to recommend.
           </Typography>
         </div>
       )}

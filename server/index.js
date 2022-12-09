@@ -15,6 +15,8 @@ app.use(cors());
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
 
+app.get("/", (req, res) => res.send("Hello to Souvenirs API."));
+
 const PORT = process.env.PORT || 5000;
 
 mongoose

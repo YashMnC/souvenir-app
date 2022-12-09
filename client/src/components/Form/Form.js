@@ -36,7 +36,12 @@ const Form = ({ currentId, setCurrentId }) => {
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
     } else
-      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
+      dispatch(
+        createPost(
+          { ...postData, name: user?.result?.name, creator: user?.result?.sub },
+          navigate
+        )
+      );
 
     // dispatch(getPosts());
     clear();

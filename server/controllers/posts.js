@@ -34,7 +34,7 @@ export const createPost = async (req, res) => {
 
   const newPostMessage = new PostMessage({
     ...post,
-    creator: req.userId,
+    //creator: req.userId,
     createdAt: new Date().toISOString(),
   });
 
@@ -73,6 +73,8 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
   const { id } = req.params;
+  const token = req?.headers?.authorization?.split(" ")[1];
+  req.userId = token;
 
   if (!req.userId) return res.json({ message: "Unauthenticated" });
 

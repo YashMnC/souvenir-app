@@ -22,23 +22,23 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/auth", { replace: true });
+    navigate("/", { replace: true });
     setUser(null);
   };
 
   const handleSignIn = () => {
-    navigate("/auth", { replace: true });
+    navigate("/", { replace: true });
     window.location.reload();
   };
 
   useEffect(() => {
-    const token = user?.token;
+    // const token = user?.token;
 
-    if (token) {
-      const decodedToken = decode(token);
+    // if (token) {
+    //   const decodedToken = decode(token);
 
-      if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();
-    }
+    //   if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();
+    // }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
@@ -67,8 +67,8 @@ const Navbar = () => {
             <div className={classes.profile}>
               <Avatar
                 className={classes.purple}
-                alt={user.result.name}
-                src={user.result.imageUrl}
+                alt={user.name}
+                src={user.picture}
               >
                 {user.result.name.charAt(0)}
               </Avatar>
